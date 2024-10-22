@@ -1,33 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BouncingBall : MonoBehaviour
 {
-    public float jumpForce = 5f; // Сила прыжка
-    public float forwardForce = 3f; // Сила движения вперед
-    public float returnSpeed = 2f; // Скорость возврата в исходное положение
-    public Vector3 startPosition; // Начальная позиция шарика
-    private Rigidbody2D rb; // Rigidbody шарика
-    private bool isJumping = false; // Флаг для отслеживания прыжка
+    public float jumpForce = 5f;
+    public float forwardForce = 3f;
+    public float returnSpeed = 2f;
+    public Vector3 startPosition;
+    private Rigidbody2D rb;
+    private bool isJumping = false;
+    private bool isControlEnabled = true; // Контроль включен по умолчанию
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        startPosition = transform.position; // Сохраняем начальную позицию
+        startPosition = transform.position;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+        if (isControlEnabled && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)))
         {
             Jump();
         }
 
-        // Возвращаем шарик в начальное положение
         if (isJumping)
         {
-            // Плавно возвращаем шарик на начальную позицию
             transform.position = Vector3.Lerp(transform.position, startPosition, returnSpeed * Time.deltaTime);
         }
     }
@@ -37,24 +34,28 @@ public class BouncingBall : MonoBehaviour
         if (!isJumping)
         {
             isJumping = true;
-            rb.velocity = new Vector3(forwardForce, jumpForce, 0); // Задаем скорость прыжка и движение вперед
-            Invoke("StopJump", 0.5f); // Остановим прыжок через 0.5 секунды
+            rb.velocity = new Vector3(forwardForce, jumpForce, 0);
+            Invoke("StopJump", 0.5f);
         }
     }
 
     void StopJump()
     {
-        isJumping = false; // Разрешаем следующий прыжок
-        rb.velocity = Vector3.zero; // Обнуляем скорость
+        isJumping = false;
+        rb.velocity = Vector3.zero;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void EnableControl(bool enable)
     {
-        // Возвращаем шарик на начальное положение при столкновении с поверхностью
+        isControlEnabled = enable; // Управление можно включить или отключить
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
         if (collision.gameObject.CompareTag("Ground"))
         {
             transform.position = new Vector3(startPosition.x, startPosition.y, startPosition.z);
-            rb.velocity = Vector3.zero; // Обнуляем скорость после приземления
+            rb.velocity = Vector3.zero;
         }
     }
 }
