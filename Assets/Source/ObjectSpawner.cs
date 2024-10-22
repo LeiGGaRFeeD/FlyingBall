@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
 
 public class ObjectSpawner : MonoBehaviour
@@ -9,9 +8,28 @@ public class ObjectSpawner : MonoBehaviour
     public Transform[] spawnPoints; // Массив точек спавна
     public float spawnInterval = 2f; // Интервал спавна в секундах
 
+    private Coroutine spawnCoroutine; // Храним корутину для остановки и возобновления
+
     void Start()
     {
-        StartCoroutine(SpawnObjects()); // Запускаем корутину для спавна объектов
+        StartSpawning(); // Запускаем спавн объектов
+    }
+
+    public void StartSpawning()
+    {
+        if (spawnCoroutine == null)
+        {
+            spawnCoroutine = StartCoroutine(SpawnObjects()); // Запускаем корутину для спавна объектов
+        }
+    }
+
+    public void StopSpawning()
+    {
+        if (spawnCoroutine != null)
+        {
+            StopCoroutine(spawnCoroutine); // Останавливаем спавн объектов
+            spawnCoroutine = null;
+        }
     }
 
     IEnumerator SpawnObjects()

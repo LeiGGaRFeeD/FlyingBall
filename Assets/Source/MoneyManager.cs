@@ -13,8 +13,9 @@ public class MoneyManager : MonoBehaviour
     public Button continueButton;
     public Button restartButton;
     public GameObject player; // Ссылка на игрока (объект с BouncingBall)
+    public ObjectSpawner objectSpawner; // Ссылка на ObjectSpawner
 
-    private BouncingBall bouncingBallScript; // Ссылка на скрипт управления игроком
+    private BouncingBall bouncingBallScript;
     private float totalMoney;
     private float sessionMoney;
     private bool isGameOver = false;
@@ -27,11 +28,14 @@ public class MoneyManager : MonoBehaviour
         continueButton.onClick.AddListener(ContinueGame);
         restartButton.onClick.AddListener(RestartGame);
 
-        bouncingBallScript = player.GetComponent<BouncingBall>(); // Получаем скрипт BouncingBall
+        bouncingBallScript = player.GetComponent<BouncingBall>();
 
         // Загрузка сохраненных данных
         totalMoney = PlayerPrefs.GetFloat("TotalMoney", 0f);
         sessionMoney = 0f; // Обнуляем деньги за сессию при старте игры
+
+        // Начинаем спавн объектов
+        objectSpawner.StartSpawning();
     }
 
     private void Update()
@@ -65,10 +69,11 @@ public class MoneyManager : MonoBehaviour
         isGameOver = true;
         isCounting = false;
 
-        // Отключаем управление игроком при проигрыше
+        // Отключаем управление игроком и спавн объектов при проигрыше
         bouncingBallScript.EnableControl(false);
+        objectSpawner.StopSpawning();
 
-        // Сохраняем общее количество денег при проигрыше
+        // Сохраняем общее количество денег
         PlayerPrefs.SetFloat("TotalMoney", totalMoney);
         PlayerPrefs.Save();
 
@@ -81,8 +86,9 @@ public class MoneyManager : MonoBehaviour
         isCounting = true;
         gameOverCanvas.SetActive(false);
 
-        // Включаем управление игроком при продолжении игры
+        // Включаем управление игроком и спавн объектов при продолжении игры
         bouncingBallScript.EnableControl(true);
+        objectSpawner.StartSpawning();
     }
 
     private void RestartGame()
