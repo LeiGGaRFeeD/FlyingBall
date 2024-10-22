@@ -1646,6 +1646,7 @@ MonoBehaviour:
   restartButton: {fileID: 1759935626}
   player: {fileID: 1353281766}
   objectSpawner: {fileID: 1645816482}
+  moneyPerSecond: 35
 --- !u!1 &1503367605
 GameObject:
   m_ObjectHideFlags: 0

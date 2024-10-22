@@ -19,7 +19,7 @@ public class MoneyManager : MonoBehaviour
     private float totalMoney;
     private float sessionMoney;
     private bool isGameOver = false;
-    private float moneyPerSecond = 10f;
+    public  float moneyPerSecond = 10f;
     private bool isCounting = true;
 
     private void Start()
