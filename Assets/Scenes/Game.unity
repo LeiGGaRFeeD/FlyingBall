@@ -1464,6 +1464,7 @@ GameObject:
   - component: {fileID: 1353281768}
   - component: {fileID: 1353281767}
   - component: {fileID: 1353281772}
+  - component: {fileID: 1353281773}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1585,7 +1586,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0, g: 0.8867924, b: 0.84202933, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1620,8 +1621,8 @@ Transform:
   m_GameObject: {fileID: 1353281766}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.3, y: 3.66, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -6.3, y: 2.82, z: 0}
+  m_LocalScale: {x: 0.64, y: 0.64, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1647,6 +1648,59 @@ MonoBehaviour:
   player: {fileID: 1353281766}
   objectSpawner: {fileID: 1645816482}
   moneyPerSecond: 35
+--- !u!114 &1353281773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353281766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df93998e1d773d4fb1298bf89fdb322, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSpriteRenderer: {fileID: 1353281769}
+  playerSkins:
+  - {fileID: 21300000, guid: 56c68d361a39895478998cc799dc7a0d, type: 3}
+  - {fileID: 21300000, guid: a5f2f119239478c4d8458dcfe2dcf397, type: 3}
+  - {fileID: 21300000, guid: 2a6510dfabd906c45a22878b83335921, type: 3}
+  playerCollider: {fileID: 1353281767}
+  skinScaleFactors:
+  - {x: 0.5, y: 0.5}
+  - {x: 0.5, y: 0.5}
+  - {x: 0.5, y: 0.5}
+--- !u!1 &1359522042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1359522044}
+  m_Layer: 0
+  m_Name: Skins
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1359522044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359522042}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 562.99084, y: 625.7641, z: -11.290743}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1503367605
 GameObject:
   m_ObjectHideFlags: 0
@@ -2538,3 +2592,4 @@ SceneRoots:
   - {fileID: 104809295}
   - {fileID: 1837425936}
   - {fileID: 1174981655}
+  - {fileID: 1359522044}
