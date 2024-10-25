@@ -10,48 +10,56 @@ public class MoveTowardsPlayer : MonoBehaviour
     public float dodgeChance = 0.2f; // Вероятность уклонения (20%)
 
     private Transform player; // Ссылка на игрока
+    public static bool isGameStarted = false; // Статус игры (общий для всех объектов)
 
     void Start()
     {
         // Находим объект игрока по тегу
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
     void Update()
     {
-        // Проверяем, должен ли спрайт следовать за игроком
+        // Проверяем, началась ли игра
+        if (!isGameStarted) return;
+
+        // Если игра началась, продолжаем
         if (followPlayer && player != null)
         {
-            // Рассчитываем расстояние до игрока
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-            // Если игрок в пределах следования
             if (distanceToPlayer < followDistance)
             {
-                // Уклонение
                 if (Random.value > dodgeChance)
                 {
-                    // Перемещаемся к игроку
                     Vector3 direction = (player.position - transform.position).normalized;
                     transform.position += direction * speed * Time.deltaTime;
                 }
             }
             else
             {
-                // Если игрок далеко, просто перемещаемся влево
                 MoveLeft();
             }
         }
         else
         {
-            // Если не следуем за игроком, просто перемещаемся влево
             MoveLeft();
         }
     }
 
     void MoveLeft()
     {
-        // Перемещаем спрайт влево
         transform.position += Vector3.left * speed * Time.deltaTime;
+    }
+
+    // Статический метод для начала игры
+    public static void StartGame()
+    {
+        isGameStarted = true;
+    }
+
+    public static void StopGame()
+    {
+        isGameStarted = false;
     }
 }

@@ -1,25 +1,44 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectSpawner : MonoBehaviour
 {
-    public GameObject[] prefabs; // Массив префабов для спавна
-    public Transform[] spawnPoints; // Массив точек спавна
-    public float spawnInterval = 2f; // Интервал спавна в секундах
+    public GameObject[] prefabs;
+    public Transform[] spawnPoints;
+    public float spawnInterval = 2f;
+    public float difficultyIncreaseRate = 0.05f;
+    public float minimumSpawnInterval = 0.5f;
+    public float maxSpawnInterval = 2f; // Максимальный интервал для ограничения
 
-    private Coroutine spawnCoroutine; // Храним корутину для остановки и возобновления
+    private Coroutine spawnCoroutine;
+    private float currentSpawnInterval;
+    private bool isGameActive = false; // Проверка активности игры
 
     void Start()
     {
-        StartSpawning(); // Запускаем спавн объектов
+        currentSpawnInterval = spawnInterval;
+    }
+
+    public void StartGame()
+    {
+        if (!isGameActive)
+        {
+            isGameActive = true;
+            StartSpawning();
+        }
+    }
+
+    public void EndGame()
+    {
+        isGameActive = false;
+        StopSpawning();
     }
 
     public void StartSpawning()
     {
-        if (spawnCoroutine == null)
+        if (spawnCoroutine == null && isGameActive)
         {
-            spawnCoroutine = StartCoroutine(SpawnObjects()); // Запускаем корутину для спавна объектов
+            spawnCoroutine = StartCoroutine(SpawnObjects());
         }
     }
 
@@ -27,7 +46,7 @@ public class ObjectSpawner : MonoBehaviour
     {
         if (spawnCoroutine != null)
         {
-            StopCoroutine(spawnCoroutine); // Останавливаем спавн объектов
+            StopCoroutine(spawnCoroutine);
             spawnCoroutine = null;
         }
     }
@@ -36,27 +55,26 @@ public class ObjectSpawner : MonoBehaviour
     {
         while (true)
         {
-            SpawnRandomObject(); // Спавн случайного объекта
-            yield return new WaitForSeconds(spawnInterval); // Ждем заданный интервал
+            SpawnRandomObject();
+
+            // Увеличиваем сложность
+            currentSpawnInterval = Mathf.Clamp(currentSpawnInterval - difficultyIncreaseRate, minimumSpawnInterval, maxSpawnInterval);
+
+            yield return new WaitForSeconds(currentSpawnInterval);
         }
     }
 
     void SpawnRandomObject()
     {
-        // Проверяем, есть ли префабы и точки спавна
         if (prefabs.Length == 0 || spawnPoints.Length == 0)
         {
             Debug.LogWarning("Нет доступных префабов или точек спавна!");
             return;
         }
 
-        // Выбираем случайный префаб
         GameObject prefabToSpawn = prefabs[Random.Range(0, prefabs.Length)];
-
-        // Выбираем случайную точку спавна
         Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-        // Спавним объект в случайной точке
         Instantiate(prefabToSpawn, spawnPoint.position, spawnPoint.rotation);
     }
 }

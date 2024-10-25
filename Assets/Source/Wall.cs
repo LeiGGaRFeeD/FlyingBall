@@ -11,7 +11,10 @@ public class Wall : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(collision.gameObject);
+        if (collision.gameObject.tag != "Player")
+        {
+            Destroy(collision.gameObject);
+        }
     }
     // Update is called once per frame
     void Update()
