@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using CrazyGames; // Не забудьте добавить CrazyGames SDK
+//using CrazyGames; // Не забудьте добавить CrazyGames SDK
 
 public class ContinueButton : MonoBehaviour
 {
@@ -38,7 +38,7 @@ public class ContinueButton : MonoBehaviour
         timer = activeDuration; // Сбрасываем таймер
     }
 
-   /* public void OnContinueButtonClick() //Need to fix 
+    public void OnContinueButtonClick() //Need to fix 
     {
         if (!isAdShowing)
         {
@@ -47,12 +47,13 @@ public class ContinueButton : MonoBehaviour
 
             // Отображаем рекламу с использованием CrazyGames SDK
             isAdShowing = true;
-            CrazyAds.Instance.beginAdBreak(() => {
-                // Callback после завершения рекламы
-                ResumeGame();
-            });
+            /*     CrazyAds.Instance.beginAdBreak(() => {
+                     // Callback после завершения рекламы
+                     ResumeGame();
+                 });*/ //AD
+            ResumeGame();
         }
-    }*/
+    }
 
     private void ResumeGame()
     {
