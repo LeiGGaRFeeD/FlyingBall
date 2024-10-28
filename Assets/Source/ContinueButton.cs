@@ -2,69 +2,62 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-//using CrazyGames; // Не забудьте добавить CrazyGames SDK
 
 public class ContinueButton : MonoBehaviour
 {
-    public Button continueButton; // Ссылка на кнопку "Продолжить"
-    public float activeDuration = 5f; // Время, в течение которого кнопка будет активной
-    private float timer;
-    private bool isAdShowing = false;
+    public GameObject buttonToDestroy;       // Кнопка, которую нужно уничтожить
+    public Text timerText;                   // UI текст для отображения времени
+    public Slider timerSlider;               // Слайдер для отображения прогресса времени
+    public float destructionDelay = 5f;      // Время до уничтожения кнопки после столкновения
+
+    private bool isCountingDown = false;     // Отслеживает, начат ли отсчет
+    private float timer;                     // Текущее время отсчета
 
     void Start()
     {
-        continueButton.gameObject.SetActive(false); // Отключаем кнопку при старте игры
-        timer = activeDuration;
+        timer = destructionDelay;
+        timerText.text = "";                 // Очищаем текст таймера при старте
+        timerSlider.value = 1f;              // Слайдер заполнен полностью в начале
+        timerSlider.gameObject.SetActive(false); // Скрываем слайдер до столкновения
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!isCountingDown)                 // Запускаем отсчет только при первом столкновении
+        {
+            isCountingDown = true;
+            timerSlider.gameObject.SetActive(true); // Отображаем слайдер при столкновении
+        }
     }
 
     void Update()
     {
-        if (continueButton.gameObject.activeSelf && !isAdShowing)
+        if (isCountingDown)
         {
-            // Уменьшаем таймер
-            timer -= Time.deltaTime;
+            timer -= Time.deltaTime;         // Уменьшаем таймер
+            timerText.text = timer.ToString("F1"); // Обновляем текст таймера с одним знаком после запятой
+            timerSlider.value = timer / destructionDelay; // Обновляем слайдер прогресса
 
-            // Проверяем, если таймер истек
             if (timer <= 0f)
             {
-                DeactivateButton(); // Деактивируем кнопку после истечения времени
+                DestroyButton();             // Уничтожаем кнопку, когда таймер достигает нуля
             }
         }
     }
 
-    public void ActivateButton()
+    private void DestroyButton()
     {
-        continueButton.gameObject.SetActive(true); // Включаем кнопку
-        timer = activeDuration; // Сбрасываем таймер
-    }
-
-    public void OnContinueButtonClick() //Need to fix 
-    {
-        if (!isAdShowing)
+        if (buttonToDestroy != null)
         {
-            // Ставим игру на паузу
-            Time.timeScale = 0f;
-
-            // Отображаем рекламу с использованием CrazyGames SDK
-            isAdShowing = true;
-            /*     CrazyAds.Instance.beginAdBreak(() => {
-                     // Callback после завершения рекламы
-                     ResumeGame();
-                 });*/ //AD
-            ResumeGame();
+            Destroy(buttonToDestroy);        // Уничтожаем кнопку
         }
+        timerText.text = "";                 // Очищаем текст
+        timerSlider.gameObject.SetActive(false); // Скрываем слайдер
     }
-
-    private void ResumeGame()
+    public void DestButton()
     {
-        // Продолжаем игру
-        Time.timeScale = 1f;
-        isAdShowing = false;
-        DeactivateButton(); // Деактивируем кнопку после просмотра рекламы
-    }
-
-    private void DeactivateButton()
-    {
-        continueButton.gameObject.SetActive(false); // Отключаем кнопку
+        Destroy(buttonToDestroy);
+        Destroy(timerText);
+        Destroy(timerSlider);
     }
 }

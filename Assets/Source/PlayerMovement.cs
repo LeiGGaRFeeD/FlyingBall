@@ -1,6 +1,8 @@
+using CrazyGames;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CrazyGames;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,6 +10,10 @@ public class PlayerMovement : MonoBehaviour
     public Collider2D movementBounds; // Коллайдер, ограничивающий движение
     private bool isGameActive = false; // Индикатор активности игры
 
+    private void Start()
+    {
+        CrazySDK.Init(() => { /** initialization finished callback */ });
+    }
     void Update()
     {
         if (isGameActive)
@@ -51,6 +57,28 @@ public class PlayerMovement : MonoBehaviour
     public void StartGame()
     {
         isGameActive = true; // Включаем управление при старте игры
+    }
+
+    public void ContGame()
+    {
+
+        CrazySDK.Ad.RequestAd(CrazyAdType.Midgame, () =>
+        {
+            Debug.Log("Ad requested");
+            Time.timeScale =0f;
+
+            /** ad started */
+        }, (error) =>
+        {
+            Debug.Log("Error");
+            /** ad error */
+        }, () =>
+        {
+            Time.timeScale = 1.0f;
+            Debug.Log("Ad player");
+            isGameActive = true; // Включаем управление при старте игры
+            /** ad finished, rewarded players here for CrazyAdType.Rewarded */
+        });
     }
 
     public void EndGame()
