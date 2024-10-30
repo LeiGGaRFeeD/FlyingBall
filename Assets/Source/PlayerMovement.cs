@@ -2,7 +2,6 @@ using CrazyGames;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CrazyGames;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     {
         CrazySDK.Init(() => { /** initialization finished callback */ });
     }
+
     void Update()
     {
         if (isGameActive)
@@ -61,23 +61,21 @@ public class PlayerMovement : MonoBehaviour
 
     public void ContGame()
     {
-
         CrazySDK.Ad.RequestAd(CrazyAdType.Midgame, () =>
         {
             Debug.Log("Ad requested");
-            Time.timeScale =0f;
+            Time.timeScale = 0f;
 
-            /** ad started */
         }, (error) =>
         {
             Debug.Log("Error");
-            /** ad error */
+
         }, () =>
         {
+            // Завершаем рекламу и восстанавливаем управление
+            isGameActive = true; // Включаем управление после завершения рекламы
             Time.timeScale = 1.0f;
-            Debug.Log("Ad player");
-            isGameActive = true; // Включаем управление при старте игры
-            /** ad finished, rewarded players here for CrazyAdType.Rewarded */
+            Debug.Log("Ad finished");
         });
     }
 
@@ -85,8 +83,10 @@ public class PlayerMovement : MonoBehaviour
     {
         isGameActive = false; // Отключаем управление при конце игры
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Отключаем управление при столкновении, но можно его включить снова через ContGame
         EndGame();
     }
 }

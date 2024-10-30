@@ -71,26 +71,26 @@ public class SkinManager : MonoBehaviour
             // Если выбранный скин текущий — пишем "Выбрано"
             if (PlayerPrefs.GetInt("SelectedSkinIndex") == currentSkinIndex)
             {
-                skinStatusText.text = "Выбрано";
-                buyButton.GetComponentInChildren<Text>().text = "Выбрать";
+                skinStatusText.text = "Selected";
+                buyButton.GetComponentInChildren<Text>().text = "Select";
             }
             else
             {
-                skinStatusText.text = "Открыто";
-                buyButton.GetComponentInChildren<Text>().text = "Выбрать";
+                skinStatusText.text = "Open";
+                buyButton.GetComponentInChildren<Text>().text = "Select";
             }
         }
         else
         {
-            skinStatusText.text = "Цена: " + skinPrices[currentSkinIndex] + " монет";
-            buyButton.GetComponentInChildren<Text>().text = "Купить";
+            skinStatusText.text = "Price: " + skinPrices[currentSkinIndex] + " scores";
+            buyButton.GetComponentInChildren<Text>().text = "Buy";
         }
     }
 
     void UpdateMoneyUI()
     {
         // Обновляем вывод денег в UI
-        moneyText.text = "Монеты: " + currentMoney.ToString("F2");
+        moneyText.text = "Scores: " + currentMoney.ToString("F2");
     }
 
     void PreviousSkin()

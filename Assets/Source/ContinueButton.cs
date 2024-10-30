@@ -5,28 +5,29 @@ using UnityEngine.UI;
 
 public class ContinueButton : MonoBehaviour
 {
-    public GameObject buttonToDestroy;       // Кнопка, которую нужно уничтожить
+    public GameObject buttonToHide;          // Кнопка, которую нужно переместить
     public Text timerText;                   // UI текст для отображения времени
     public Slider timerSlider;               // Слайдер для отображения прогресса времени
-    public float destructionDelay = 5f;      // Время до уничтожения кнопки после столкновения
+    public float destructionDelay = 5f;      // Время до перемещения кнопки за экран после столкновения
+    public Vector3 offScreenPosition = new Vector3(-1000, -1000, 0); // Позиция за пределами экрана
 
     private bool isCountingDown = false;     // Отслеживает, начат ли отсчет
+    private bool hasAppearedOnce = false;    // Отслеживает, была ли кнопка показана ранее
     private float timer;                     // Текущее время отсчета
 
     void Start()
     {
         timer = destructionDelay;
-        timerText.text = "";                 // Очищаем текст таймера при старте
-        timerSlider.value = 1f;              // Слайдер заполнен полностью в начале
-        timerSlider.gameObject.SetActive(false); // Скрываем слайдер до столкновения
+      //  MoveOffScreen();                     // Перемещаем элементы за пределы экрана при старте
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!isCountingDown)                 // Запускаем отсчет только при первом столкновении
+        if (!hasAppearedOnce)                // Проверяем, была ли кнопка показана ранее
         {
             isCountingDown = true;
-            timerSlider.gameObject.SetActive(true); // Отображаем слайдер при столкновении
+            hasAppearedOnce = true;          // Отмечаем, что кнопка была показана
+         //   MoveOnScreen();                  // Перемещаем элементы на экран
         }
     }
 
@@ -40,24 +41,25 @@ public class ContinueButton : MonoBehaviour
 
             if (timer <= 0f)
             {
-                DestroyButton();             // Уничтожаем кнопку, когда таймер достигает нуля
+                MoveOffScreen();             // Перемещаем элементы за экран, когда таймер достигает нуля
+                isCountingDown = false;      // Останавливаем отсчет
             }
         }
     }
 
-    private void DestroyButton()
+    private void MoveOffScreen()
     {
-        if (buttonToDestroy != null)
-        {
-            Destroy(buttonToDestroy);        // Уничтожаем кнопку
-        }
-        timerText.text = "";                 // Очищаем текст
-        timerSlider.gameObject.SetActive(false); // Скрываем слайдер
+        // Перемещаем кнопку, таймер и слайдер за пределы экрана
+        buttonToHide.transform.position = offScreenPosition;
+        timerText.transform.position = offScreenPosition;
+        timerSlider.transform.position = offScreenPosition;
     }
-    public void DestButton()
+
+    public void MoveOnScreen()
     {
-        Destroy(buttonToDestroy);
-        Destroy(timerText);
-        Destroy(timerSlider);
+        // Размещаем элементы в видимых позициях
+        buttonToHide.transform.position = new Vector3(0, -10000, 0); // Задайте нужную позицию на экране
+        timerText.transform.position = new Vector3(0, -10000, 0);  // Задайте нужную позицию для текста
+        timerSlider.transform.position = new Vector3(0, -10000, 0); // Задайте нужную позицию для слайдера
     }
 }
