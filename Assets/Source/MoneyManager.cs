@@ -103,4 +103,16 @@ public class MoneyManager : MonoBehaviour
     {
         PlayerHit();
     }
+    public float GetTotalMoney()
+    {
+        return totalMoney;
+    }
+
+    public void SpendMoney(float amount)
+    {
+        totalMoney -= amount;
+        UpdateUI();
+        PlayerPrefs.SetFloat("TotalMoney", totalMoney); // Сохраняем обновленные деньги
+        PlayerPrefs.Save();
+    }
 }

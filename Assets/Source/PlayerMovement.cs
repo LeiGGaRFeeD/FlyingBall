@@ -64,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
         CrazySDK.Ad.RequestAd(CrazyAdType.Midgame, () =>
         {
             Debug.Log("Ad requested");
-            Time.timeScale = 0f;
+        //    Time.timeScale = 0f;
 
         }, (error) =>
         {
@@ -74,7 +74,8 @@ public class PlayerMovement : MonoBehaviour
         {
             // Завершаем рекламу и восстанавливаем управление
             isGameActive = true; // Включаем управление после завершения рекламы
-            Time.timeScale = 1.0f;
+          //  Time.timeScale = 1.0f;
+            FollowCursor();
             Debug.Log("Ad finished");
         });
     }

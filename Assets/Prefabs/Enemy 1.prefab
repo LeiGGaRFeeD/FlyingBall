@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  followPlayer: 1
+  followPlayer: 0
   followDistance: 1
   dodgeChance: 0.2
 --- !u!212 &1094463741142240725
