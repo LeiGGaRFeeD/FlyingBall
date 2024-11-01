@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (movementBounds == null)
         {
-            Debug.LogWarning("ќтсутствует движение, ограничивающее движение.");
+            Debug.LogWarning("ќтсутствует коллайдер, ограничивающий движение.");
             return position;
         }
 
@@ -64,7 +64,6 @@ public class PlayerMovement : MonoBehaviour
         CrazySDK.Ad.RequestAd(CrazyAdType.Midgame, () =>
         {
             Debug.Log("Ad requested");
-        //    Time.timeScale = 0f;
 
         }, (error) =>
         {
@@ -73,9 +72,11 @@ public class PlayerMovement : MonoBehaviour
         }, () =>
         {
             // «авершаем рекламу и восстанавливаем управление
-            isGameActive = true; // ¬ключаем управление после завершени€ рекламы
-          //  Time.timeScale = 1.0f;
-            FollowCursor();
+            isGameActive = true;
+            Cursor.visible = true;          // ¬ключаем видимость курсора на вс€кий случай
+            Cursor.lockState = CursorLockMode.None; // –азблокируем курсор, если он заблокирован
+
+            FollowCursor(); // «апускаем слежение за курсором
             Debug.Log("Ad finished");
         });
     }
